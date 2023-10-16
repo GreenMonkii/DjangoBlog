@@ -1,11 +1,10 @@
 from django.db import models
-from datetime import datetime as dt
 from django.core.validators import RegexValidator
 # Create your models here.
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, blank=False, unique=True)
     slug = models.SlugField(unique=True)
 
     def __str__(self) -> str:
@@ -36,7 +35,7 @@ class Post(models.Model):
     slug = models.SlugField(unique=True)
     writer = models.ForeignKey(to=Writer, on_delete=models.PROTECT, null=True, related_name="Posts")
     image_url = models.URLField(blank=True)
-    creation_date = models.DateTimeField(auto_now=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category, related_name="posts")
 
